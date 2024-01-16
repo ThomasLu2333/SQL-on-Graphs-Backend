@@ -4,3 +4,4 @@ __pychache__/
 /tests/statuses/.pytest_cache/
 tests/.DS_Store
 .idea
+**/__pycache__
