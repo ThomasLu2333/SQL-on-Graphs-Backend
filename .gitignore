@@ -1,2 +1,4 @@
 venv/
 __pychache__/
+/tests/constraints/.pytest_cache/
+/tests/statuses/.pytest_cache/
