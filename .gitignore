@@ -1,5 +1,5 @@
 venv/
-__pychache__/
+__pycache__/
 /tests/constraints/.pytest_cache/
 /tests/statuses/.pytest_cache/
 tests/.DS_Store
