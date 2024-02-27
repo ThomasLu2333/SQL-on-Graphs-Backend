@@ -32,4 +32,12 @@ def test_CHECKTYPE():
     values3 = [[101, 102, "1", "2", 105], [101, 102, 107, 102, 105]]
     assert not TYPEWIDE_CONSTRAINTS["CHECKTYPE_INT"].check(values3).success
     values4 = [[True, False, None], [1, 0, False]]
-    assert not TYPEWIDE_CONSTRAINTS["CHECKTYPE_BOOL"].check(values3).success
+    assert not TYPEWIDE_CONSTRAINTS["CHECKTYPE_BOOL"].check(values4).success
+
+def test_BoundTypewideConstraint():
+    bound_constraint = BoundTypewideConstraint(TYPEWIDE_CONSTRAINTS["UNIQUE"], ["column1", "column2"])
+    assert not bound_constraint.check({"column1": ["a", "b", "c", "d"], "column2":["aa", "aa", "bb", "dd"]}).success
+    print("\n" + str(bound_constraint.check({"column1": ["a", "b", "c", "d"], "column2":["aa", "aa", "bb", "dd"]})))
+    bound_constraint = BoundTypewideConstraint(TYPEWIDE_CONSTRAINTS["CHECKTYPE_INT"], ["column1", "column2"])
+    assert bound_constraint.check({"column1": [1, 100000, -999, 92382973], "column2": [1, 0, 3, 13]}).success
+    print("\n" + str(bound_constraint.check({"column1": [1, 100000, -999, 92382973], "column2": [1, 0, 3, 13]})))

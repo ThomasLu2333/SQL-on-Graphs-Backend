@@ -5,3 +5,4 @@ __pycache__/
 tests/.DS_Store
 .idea
 **/__pycache__
+**/.pytest_cache

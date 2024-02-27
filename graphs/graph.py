@@ -81,7 +81,7 @@ class Graph:
         if self.M.get(start) is None:
             return False
         for edge in self.M.get(start):
-            if edge["to"] == end:
+            if edge[TO] == end:
                 return True
         return False
 
@@ -107,9 +107,9 @@ class Graph:
             self.edges.rollback(new_edges)
         else:
             for vertex in new_vertices:
-                self.M[vertex["id"]] = []
+                self.M[vertex[ID]] = []
             for edge in new_edges:
-                self.M[edge["from"]].append(edge)
+                self.M[edge[FROM]].append(edge)
         return status
 
     def check_constraints(self) -> Status:

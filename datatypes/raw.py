@@ -3,6 +3,7 @@ from datatypes.primitive import *
 from statuses.status import *
 from typing import Optional
 
+ID: str = "id"
 
 class VertexOrEdgeTypeMissingFieldStatus(LeafStatus):
     def __init__(self, field_name:str, type_name:str):
@@ -60,14 +61,14 @@ class RawType(metaclass=ABCMeta):
         flagA = False
         flagB = False
         for bound_constraint in self.constraints:
-            if "id" in bound_constraint.names and bound_constraint.constraint is TYPEWIDE_CONSTRAINTS["UNIQUE"]:
+            if ID in bound_constraint.names and bound_constraint.constraint is TYPEWIDE_CONSTRAINTS["UNIQUE"]:
                 flagA = True
-            if "id" in bound_constraint.names and bound_constraint.constraint is TYPEWIDE_CONSTRAINTS["NOTNULL"]:
+            if ID in bound_constraint.names and bound_constraint.constraint is TYPEWIDE_CONSTRAINTS["NOTNULL"]:
                 flagB = True
             targets = deltas if deltas is not None and bound_constraint.constraint.is_local else values
             statuses.append(bound_constraint.check(targets))
         if not flagA or not flagB:
-            statuses.append(VertexOrEdgeTypeMissingFieldStatus("id", self.name))
+            statuses.append(VertexOrEdgeTypeMissingFieldStatus(ID, self.name))
         for bound_constraint in self.constraints:
             targets = deltas if deltas is not None and bound_constraint.constraint.is_local else values
             statuses.append(bound_constraint.check(targets))

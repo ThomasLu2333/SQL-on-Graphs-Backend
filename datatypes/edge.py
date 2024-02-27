@@ -5,6 +5,9 @@ from datatypes.raw import *
 from statuses.status import *
 from constraints.typewide import *
 
+FROM : str = "from"
+TO: str = "to"
+WEIGHT: str = "weight"
 
 class EdgeType(RawType):
     """
@@ -19,13 +22,13 @@ class EdgeType(RawType):
         flag_from = flag_to = False
         statuses = []
         for bound_constraint in self.constraints:
-            if "from" in bound_constraint.names and bound_constraint.constraint is TYPEWIDE_CONSTRAINTS["NOTNULL"]:
+            if FROM in bound_constraint.names and bound_constraint.constraint is TYPEWIDE_CONSTRAINTS["NOTNULL"]:
                 flag_from = True
-            if "to" in bound_constraint.names and bound_constraint.constraint is TYPEWIDE_CONSTRAINTS["NOTNULL"]:
+            if TO in bound_constraint.names and bound_constraint.constraint is TYPEWIDE_CONSTRAINTS["NOTNULL"]:
                 flag_to = True
         if not flag_from:
-            statuses.append(VertexOrEdgeTypeMissingFieldStatus("from", self.name))
+            statuses.append(VertexOrEdgeTypeMissingFieldStatus(FROM, self.name))
         if not flag_to:
-            statuses.append(VertexOrEdgeTypeMissingFieldStatus("to", self.name))
+            statuses.append(VertexOrEdgeTypeMissingFieldStatus(TO, self.name))
         statuses += super()._check_constraints(values, deltas)
         return VertexOrEdgeTypeCheckStatus(statuses, self.name)

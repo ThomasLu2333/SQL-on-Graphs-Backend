@@ -4,7 +4,8 @@ from constraints.typewide import TypewideConstraint
 from datatypes.primitive import PrimitiveTypes, Primitive, NULL
 from datatypes.vertex import VertexType
 from statuses.status import *
-from datatypes.raw import RawType
+from datatypes.raw import RawType, ID
+from utilities.Transaction import Transaction
 
 
 class DataAddEntriesStatus(DerivedStatus):
@@ -36,7 +37,14 @@ class Data:
                 Each list of values must have the same length.
         ids: a list of values of the id field.
         entries: a dictionary mapping each id to the entry with this id.
+        last: a Transaction object showing last operation done onto this object. None if newly created.
     """
+
+    class INSERTDataTransaction(Transaction):
+        """
+        Represents an INSERT transaction done to a matrix.
+        """
+        pass
 
     def __init__(self, datatype: RawType):
         """
@@ -76,11 +84,12 @@ class Data:
         status = self.datatype.check_constraints(self.values, deltas)
         new_status = DataAddEntriesStatus(self.datatype, [status])
         for entry in entries:
-            self.ids.append(entry["id"])
-            self.entries[entry["id"]] = entry
+            self.ids.append(entry[ID])
+            self.entries[entry[ID]] = entry
         return new_status
 
     def rollback(self, entries: list[dict[str, Primitive]]):
+        #TODO: implement completely the Rollback class to handle all insertions, deletions, and updates
         for _ in range(len(entries)):
             for key in self.datatype.names:
                 self.values[key].pop()
